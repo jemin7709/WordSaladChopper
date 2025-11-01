@@ -13,7 +13,7 @@
 ## News
 - [11/01/2025] v1 released — first public version now available.
 
-## 🚀 1. Quick Start (End-to-End Demo)
+## 🚀 1. Quick Start
 
 Here we show the on-the-fly (end-to-end) version implemented with Hugging Face.
 For large-scale paper reproduction, see [reproduced/README.md](reproduced/README.md).
@@ -43,12 +43,6 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Load the trained prober
 prober_file = hf_hub_download(
-    repo_id="xiewenya/DeepSeek-R1-Distilled-Qwen-7B-s1-classifier",
-    filename="probe.pkl",
-    repo_type="model"
-)
-
-prober_file = hf_hub_download(
     repo_id="xiewenya/WordSaladChopper_Classifier",
     filename="DeepSeek-R1-Distill-Qwen-7B_s1/probe.pkl",
     repo_type="model",
@@ -62,7 +56,7 @@ chopper = Chopper(
 )
 
 messages = [
-    {"role": "user", "content": "Repeat the following sentence 10 times with two newlines between each repetition and without any other text. The sentence is: Today is Halloween, and I'm going to hang out with my friends, what a great day!"}
+    {"role": "user", "content": "Return your final response within \\boxed{}. Compute: $1-2+3-4+5- \\dots +99-100$."}
 ]
 prompt_txt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
@@ -168,7 +162,7 @@ To train on your own samples:
 - Modify `configs/train.yaml`
 ---
 
-## 5. Repository Structure
+## 4. Repository Structure
 
 ```
 WordSaladChopper/
