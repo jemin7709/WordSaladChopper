@@ -101,6 +101,7 @@ bash sh/generate.sh
 ```
 
 To use your own classifier, set `PROBER_PATH` in `sh/generate.sh` before running.
+
 ---
 
 ## 3. Training a Custom Classifier (Probe)
@@ -146,9 +147,9 @@ bash sh/training.sh
 ### Using Your Own Dataset
 
 To train on your own samples:
-
 Step 1: Format your dataset to match the structure of our released traces.
 Step 2: Modify the data path in `configs/train.yaml`.
+
 ---
 
 ## 4. Repository Structure
