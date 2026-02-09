@@ -11,6 +11,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class DoubleNewlineCriteria(StoppingCriteria):
     """Stop when the most-recent token ∈ `newline_token_ids`."""
 
@@ -19,6 +20,7 @@ class DoubleNewlineCriteria(StoppingCriteria):
 
     def __call__(self, input_ids: torch.Tensor, scores, **kwargs) -> bool:
         return int(input_ids[0, -1]) in self._ids
+
 
 @dataclass
 class GenState:
@@ -40,8 +42,9 @@ class GenState:
             tokenizer.encode(p, add_special_tokens=False, return_tensors="pt")
             for p in pieces
         ]
-        
+
         self.context_ids = torch.cat(ids, dim=-1).to(device or self.context_ids.device)
+
 
 def _generate_step(
     model: AutoModelForCausalLM,
@@ -80,7 +83,7 @@ def _generate_step(
         **gen_cfg,
     )
     prompt_len = state.context_ids.size(1)
-    sequences = out                         # already a tensor
+    sequences = out  # already a tensor
     new_ids = sequences[:, prompt_len:]
     new_ids = new_ids[0]
 
@@ -96,14 +99,15 @@ def _generate_step(
     new_text = tokenizer.decode(new_ids, skip_special_tokens=True)
     last_id = new_ids[-1].item() if new_ids.numel() else None
     should_stop = (
-        new_ids.numel() == state.remaining_token_budget or
-        last_id == tokenizer.eos_token_id
+        new_ids.numel() == state.remaining_token_budget
+        or last_id == tokenizer.eos_token_id
     )
     del out
-    torch.cuda.empty_cache()
+    # torch.cuda.empty_cache()
     del full
-    torch.cuda.empty_cache()
+    # torch.cuda.empty_cache()
     return new_text, new_ids.numel(), last_hid, should_stop
+
 
 def wsc_generate(
     model: AutoModelForCausalLM,
@@ -143,9 +147,11 @@ def wsc_generate(
             ## If in rescue, then no need to stop
             if in_rescue:
                 crit = None
-            
-            txt, used_tokens, hid, should_stop = _generate_step(model, tokenizer, state, crit, gen_cfg)
-            
+
+            txt, used_tokens, hid, should_stop = _generate_step(
+                model, tokenizer, state, crit, gen_cfg
+            )
+
             logger.debug(f"txt: {txt}")
             logger.debug(f"used_tokens: {used_tokens}")
             logger.debug(f"should_stop: {should_stop}")
@@ -153,7 +159,9 @@ def wsc_generate(
             logger.debug(f"state.full_texts: {state.full_texts}")
             logger.debug(f"state.full_scores: {state.full_scores}")
             logger.debug(f"state.rescue_time: {state.rescue_time}")
-            logger.debug(f"state.remaining_token_budget: {state.remaining_token_budget}")
+            logger.debug(
+                f"state.remaining_token_budget: {state.remaining_token_budget}"
+            )
             logger.debug(f"state.total_used_tokens: {state.total_used_tokens}")
             ## If the generated text is complete or the token budget is exhausted, then stop
             state.full_texts.append(txt)
@@ -175,7 +183,9 @@ def wsc_generate(
                 state.rescue_time += 1
 
                 ## Add the rescue prompt length to the total used tokens
-                state.total_used_tokens += tokenizer.encode(rescue_prompt, add_special_tokens=False, return_tensors="pt").shape[1]
+                state.total_used_tokens += tokenizer.encode(
+                    rescue_prompt, add_special_tokens=False, return_tensors="pt"
+                ).shape[1]
                 state.remaining_token_budget = rescue_budget
                 if len(state.kept_texts) > 0:
                     state.rebuild(
