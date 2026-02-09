@@ -31,6 +31,8 @@ def vanilla_generate(model, tokenizer, prompt_txt, gen_cfg, max_new_tokens):
         "rescue_time": 0.0,
         "kept_texts": [],
         "kept_scores": [],
+        "full_scores": [],
+        "full_texts": [],
     }
 
 class TextHandler:
