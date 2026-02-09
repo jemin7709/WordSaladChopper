@@ -81,24 +81,17 @@ def _generate_step(
         state.context_ids,
         stopping_criteria=[criterion] if criterion is not None else None,
         use_cache=True,
-        return_dict_in_generate=False,
+        return_dict_in_generate=True,
+        output_hidden_states=True,
         max_new_tokens=state.remaining_token_budget,
         **gen_cfg,
     )
     prompt_len = state.context_ids.size(1)
-    sequences = out  # already a tensor
+    sequences = out.sequences
     new_ids = sequences[:, prompt_len:]
     new_ids = new_ids[0]
 
-    with torch.inference_mode():
-        full = model(
-            input_ids=sequences,
-            attention_mask=torch.ones_like(sequences),
-            output_hidden_states=True,
-            use_cache=True,
-        )
-
-    last_hid = full.hidden_states[-2][0, -1]
+    last_hid = out.hidden_states[-1][-2][0, -1]
     new_text = tokenizer.decode(new_ids, skip_special_tokens=True)
     last_id = new_ids[-1].item() if new_ids.numel() else None
     should_stop = (
@@ -106,8 +99,6 @@ def _generate_step(
         or last_id == tokenizer.eos_token_id
     )
     del out
-    # torch.cuda.empty_cache()
-    del full
     # torch.cuda.empty_cache()
     return new_text, new_ids.numel(), last_hid, should_stop
 
