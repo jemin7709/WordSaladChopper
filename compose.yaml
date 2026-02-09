@@ -1,0 +1,11 @@
+services:
+  wordsaladchopper:
+    image: ghcr.io/jemin7709/wordsaladchopper:latest
+    build: .
+    ipc: host
+    environment:
+      HF_TOKEN: ${HF_TOKEN}
+      PYTHONPATH: /workspace
+    # volumes:
+    #   - cache:/root/.cache
+    command: sleep infinity

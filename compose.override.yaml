@@ -1,0 +1,14 @@
+services:
+  server-test:
+    container_name: server-test
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: [ "0" ]
+              capabilities: [ gpu ]
+
+# volumes:
+#   cache:
+#     name: cache_hailo_jemin
