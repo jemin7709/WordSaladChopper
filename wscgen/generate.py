@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any, List, Tuple
+from typing import TYPE_CHECKING, Any, List, Tuple
 
 import torch
 from transformers import (
@@ -10,6 +10,9 @@ from transformers import (
 import logging
 
 logger = logging.getLogger(__name__)
+
+if TYPE_CHECKING:
+    from .chopper import Chopper
 
 
 class DoubleNewlineCriteria(StoppingCriteria):
@@ -113,7 +116,7 @@ def wsc_generate(
     model: AutoModelForCausalLM,
     tokenizer: AutoTokenizer,
     prompt: str,
-    chopper: "Chopper",
+    chopper: Chopper,
     *,
     newline_token_ids: List[int] | None = None,
     gen_cfg: dict[str, Any] | None = None,
@@ -126,9 +129,9 @@ def wsc_generate(
     On-the-fly generation with hidden-state classified + rescue
     """
 
-    logger.debug(f"------------prompt in wsc_generate------------")
+    logger.debug("------------prompt in wsc_generate------------")
     logger.debug(prompt)
-    logger.debug(f"------------prompt in wsc_generate------------")
+    logger.debug("------------prompt in wsc_generate------------")
 
     crit = DoubleNewlineCriteria(newline_token_ids)
 
@@ -179,7 +182,7 @@ def wsc_generate(
 
             # 3. If chopped, then rescue
             if len(state.kept_texts) < before:
-                logger.info(f"Rescuing...")
+                logger.info("Rescuing...")
                 state.rescue_time += 1
 
                 ## Add the rescue prompt length to the total used tokens
