@@ -1,6 +1,6 @@
 services:
-  server-test:
-    container_name: server-test
+  wordsaladchopper:
+    container_name: wordsaladchopper
     deploy:
       resources:
         reservations:
