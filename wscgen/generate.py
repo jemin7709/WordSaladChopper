@@ -116,7 +116,7 @@ def wsc_generate(
     model: AutoModelForCausalLM,
     tokenizer: AutoTokenizer,
     prompt: str,
-    chopper: Chopper,
+    chopper: "Chopper",
     *,
     newline_token_ids: List[int] | None = None,
     gen_cfg: dict[str, Any] | None = None,
