@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Protocol
+from typing import List
 import numpy as np
 
 class StreakTrimmer:

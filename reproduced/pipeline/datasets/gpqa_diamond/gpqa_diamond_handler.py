@@ -5,7 +5,6 @@ from skythought.evals.util.math_parsing_util import get_multiple_choice_answer
 from ..base import TaskHandler
 from pipeline.config import PipelineConfig
 from pipeline.utils import load_json
-import re
 
 class GPQADiamondTaskHandler(TaskHandler):
     def __init__(self, cfg: PipelineConfig, params: dict | None = None):
@@ -14,7 +13,7 @@ class GPQADiamondTaskHandler(TaskHandler):
 
         # ↓ prefer local path if provided
         if "path" in self.params:
-            import json, pathlib
+            import pathlib
             data = load_json(pathlib.Path(self.params["path"]))
             ## just select 10 for debugging
             ## data is a dict of dict

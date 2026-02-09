@@ -1,10 +1,11 @@
-import math, random
+import math
+import random
 from typing import Dict, List
 from wscgen.pipeline.config import PipelineConfig
 from wscgen.pipeline.utils import load_json
 import logging
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Tuple
 
 logger = logging.getLogger(__name__)
 

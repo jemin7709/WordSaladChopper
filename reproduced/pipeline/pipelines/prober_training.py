@@ -8,7 +8,7 @@ import numpy as np
 
 from pipeline.config import PipelineConfig
 from pipeline.extractor import HiddenStateExtractor
-from pipeline.labeler import SentenceLabeler, build_labeler
+from pipeline.labeler import build_labeler
 from pipeline.collector import TrainingDataCollector
 from pipeline.builder import ProbeDatasetBuilder
 from pipeline.prober import build_prober

@@ -19,7 +19,7 @@ class GSM8KTaskHandler(TaskHandler):
         self.params = params
         if "path" in self.params:
             logger.info(self.params)
-            import json, pathlib
+            import pathlib
             data = load_json(pathlib.Path(self.params["path"]))
             ## just select 10 for debugging
             ## data is a dict of dict

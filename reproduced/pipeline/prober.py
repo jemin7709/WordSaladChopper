@@ -14,7 +14,6 @@ from sklearn.metrics import (
     roc_auc_score,
 )
 from torch.optim import AdamW
-from torch.nn import DataParallel
 
 class BaseProber(abc.ABC):
     @abc.abstractmethod

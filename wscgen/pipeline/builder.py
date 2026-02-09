@@ -3,7 +3,6 @@ import numpy as np
 import logging
 from tqdm import tqdm
 import torch
-from .utils import save_json
 from .extractor import HiddenStateExtractor
 from .labeler import SentenceLabeler
 

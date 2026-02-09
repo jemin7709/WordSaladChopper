@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Dict, List, Tuple, Any
 import logging
+import re
 from pipeline.labeler import build_labeler
 
 import numpy as np
@@ -21,7 +22,6 @@ from sklearn.metrics import (
 )
 
 logger = logging.getLogger(__name__)
-import re
 
 class TrimEvalPipeline:
     def __init__(self, cfg: PipelineConfig,):
@@ -131,8 +131,8 @@ class TrimEvalPipeline:
             })
 
             details = [
-                {"sentence": s, "pred": float(p), "label": int(l)}
-                for s, p, l in zip(sentences, probs, labels)
+                {"sentence": s, "pred": float(p), "label": int(lbl)}
+                for s, p, lbl in zip(sentences, probs, labels)
             ]
             all_details.append(details)
 

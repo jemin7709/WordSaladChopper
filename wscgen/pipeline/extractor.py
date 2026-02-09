@@ -71,7 +71,8 @@ class HiddenStateExtractor:
         return token_texts, h
     def _get_block(self, idx):
         n_blocks = len(self.model.model.layers)
-        if idx < 0: idx += n_blocks
+        if idx < 0:
+            idx += n_blocks
         return self.model.model.layers[idx]
 
     def _get_submodule(self, block, path: str):
@@ -132,4 +133,5 @@ class HiddenStateExtractor:
         return (states, indices) if return_indices else states
 
     def __del__(self):
-        if self._hook_handle: self._hook_handle.remove()
+        if self._hook_handle:
+            self._hook_handle.remove()

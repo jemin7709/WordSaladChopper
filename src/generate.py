@@ -315,7 +315,7 @@ if __name__ == "__main__":
     }
     (Path(run_dir) / "summary.json").write_text(json.dumps(summary, indent=2))
     
-    with open(run_dir / f"summary.json", "w") as f:
+    with open(run_dir / "summary.json", "w") as f:
         json.dump(summary, f, indent=4, ensure_ascii=False)
 
 

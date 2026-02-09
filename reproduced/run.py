@@ -8,6 +8,13 @@ import torch
 import hydra
 from omegaconf import DictConfig, OmegaConf
 
+from pipeline.config import PipelineConfig
+from pipeline.pipelines import (
+    ProberTrainingPipeline,
+    TrimEvalPipeline,
+    ContinuationGenerationPipeline
+)
+
 TRAINING_PATH_MAP = OmegaConf.load("configs/resources/dataset_paths.yaml")["dataset_paths"]
 EVALUATION_DATA_PATH_MAP = OmegaConf.load("configs/resources/eval_dataset_paths.yaml")["eval_dataset_paths"]
 
@@ -38,13 +45,6 @@ def _eds_path(model_name: str, ds_id: str) -> str:
         ) from e
 
 OmegaConf.register_new_resolver("eds_path", _eds_path)
-
-from pipeline.config import PipelineConfig
-from pipeline.pipelines import (
-    ProberTrainingPipeline,
-    TrimEvalPipeline,
-    ContinuationGenerationPipeline
-)
 
 def setup_logger(exp_dir: Path, phase: str) -> None:
     exp_dir.mkdir(parents=True, exist_ok=True)

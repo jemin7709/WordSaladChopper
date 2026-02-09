@@ -6,7 +6,8 @@ from pathlib import Path
 from typing import Dict, List, Any, Union
 
 from transformers import AutoTokenizer
-import re, hashlib
+import re
+import hashlib
 
 from pipeline.config    import PipelineConfig
 from pipeline.inference import VllmBackend
@@ -55,9 +56,9 @@ class ContinuationGenerationPipeline:
                 self.eval_meta = {key: params}
                 self.cfg.eval_datasets = {key: params}
                
-        logger.info(f'*'*80)
+        logger.info('*'*80)
         logger.info(f"eval_datasets:{self.eval_meta}")
-        logger.info(f'*'*80)
+        logger.info('*'*80)
         self.handlers: Dict[str, Any] = {}
         self.continuation_cues = cfg.continuation_cues
         self.continuation_cue = (
@@ -67,7 +68,7 @@ class ContinuationGenerationPipeline:
 
         # backend
         self.backend = VllmBackend(cfg)
-        logger.info(f"-----------continuation_cues-------------")
+        logger.info("-----------continuation_cues-------------")
         logger.info(self.continuation_cues)
         self.cue_len = len(
             self.tokenizer.encode(self.continuation_cue, add_special_tokens=False)
@@ -83,17 +84,17 @@ class ContinuationGenerationPipeline:
             return float(v) if v is not None else None
 
         raw = cfg.gen_params or {}
-        logger.info(f'='*80)
+        logger.info('='*80)
         logger.info(f"raw:{raw}")
         if raw.get('max_tokens') is None: 
-            logger.info(f"raw.get('max_tokens') is none")
+            logger.info("raw.get('max_tokens') is none")
             self.gen_kwargs = {
                 "temperature": _maybe_float(raw, "temperature", 0.6),
                 "top_p": _maybe_float(raw, "top_p", 0.95),
                 **({"stop": raw["stop"]} if "stop" in raw else {})
             }
         else:
-            logger.info(f"raw.get('max_tokens') is not none")
+            logger.info("raw.get('max_tokens') is not none")
             self.gen_kwargs = {
                 "max_tokens": _maybe_int(raw, "max_tokens", None),
                 "temperature": _maybe_float(raw, "temperature", 0.6),
@@ -139,9 +140,9 @@ class ContinuationGenerationPipeline:
 
             if prompts:
                 logger.info(f"{ds_name} generating {len(prompts)} continuations …")
-                logger.info(f"*"*80)
+                logger.info("*"*80)
                 logger.info(f"gen_kwargs when generate:{self.gen_kwargs}")
-                logger.info(f"*"*80)
+                logger.info("*"*80)
                 raw_outs = self.backend.generate_raw(prompts, **self.gen_kwargs)
                 
                 for out in raw_outs:
@@ -257,7 +258,8 @@ class ContinuationGenerationPipeline:
 
         comp_avg_pct = (tot_orig_tok - tot_regen_tok) / tot_orig_tok * 100 if tot_orig_tok else 0
 
-        to_pct = lambda x, d: x / d * 100 if d else 0
+        def to_pct(x, d):
+            return x / d * 100 if d else 0
         return {
             "regen_accuracy_avg": to_pct(acc_r_avg, num_resp),
             "avg_compression_%_avg": comp_avg_pct,

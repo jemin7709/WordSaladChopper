@@ -4,9 +4,8 @@ from dataclasses import asdict, dataclass, field
 import hashlib
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, Any, Union, Optional, List
+from typing import Dict, Any, Union, Optional
 import yaml
-from types import SimpleNamespace
 import os
 
 logger = logging.getLogger(__name__)

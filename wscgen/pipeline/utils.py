@@ -1,9 +1,17 @@
 import json
+import re
+from math import isclose
 from pathlib import Path
-from typing import Union, Optional
-import yaml
-from .config import PipelineConfig
 import importlib.resources as pkg_rs
+from typing import Optional, Union
+
+import regex
+import yaml
+from latex2sympy2 import latex2sympy
+from sympy import N, simplify
+from sympy.parsing.latex import parse_latex
+from sympy.parsing.sympy_parser import parse_expr
+from word2number import w2n
 
 def load_json(file_path: str):
     """Load a JSON file and return its content."""
@@ -47,16 +55,6 @@ def load_config(cfg_path: Optional[Union[str, Path]] = None) -> dict:
 """
 The logic in this file largely borrows from Qwen2.5-Math codebase at https://github.com/QwenLM/Qwen2.5-Math:
 """
-
-import re
-from math import isclose
-
-import regex
-from latex2sympy2 import latex2sympy
-from sympy import N, simplify
-from sympy.parsing.latex import parse_latex
-from sympy.parsing.sympy_parser import parse_expr
-from word2number import w2n
 
 
 def convert_word_number(text: str) -> str:

@@ -14,7 +14,7 @@ class MathTaskHandler(TaskHandler):
 
         # ↓ prefer local path if provided
         if "path" in self.params:
-            import json, pathlib
+            import pathlib
             data = load_json(pathlib.Path(self.params["path"]))
             ## just select 10 for debugging
             ## data is a dict of dict

@@ -8,7 +8,7 @@ from datasets import load_dataset
 from pydantic import BaseModel, Field
 from pipeline.config import PipelineConfig
 from pipeline.utils import load_json
-import json, pathlib
+import pathlib
 
 ConversationType = List[Dict[str, Any]]
 

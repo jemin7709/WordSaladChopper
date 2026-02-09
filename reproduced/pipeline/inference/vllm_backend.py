@@ -5,14 +5,11 @@ from typing import Union, List, Any
 # deepcopy
 from copy import deepcopy
 
+from vllm import LLM, SamplingParams
 
 from pipeline.config import PipelineConfig
 
 logger = logging.getLogger(__name__)
-
-from vllm import LLM, SamplingParams
-
-import torch, gc, ray, logging
 
 
 class VllmBackend:
