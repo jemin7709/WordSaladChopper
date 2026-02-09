@@ -4,4 +4,6 @@ A file for [guiding coding agents](https://agents.md/).
 
 ## General Principles
 
-- Use ```uv``` for python.
+- Search related files for context before starting a task.
+- Use `uv` for Python.
+- After finishing a task, run `ruff` and `pyrefly` to check and fix code style and static issues.
